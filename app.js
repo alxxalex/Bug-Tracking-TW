@@ -5,16 +5,17 @@ import { User } from "./models/user.js";
 import { Project } from "./models/project.js";
 import { Bug } from "./models/bug.js";
 import { usersRouter } from './Routes/usersRouter.js';
+import { projectsRouter } from './Routes/projectsRouter.js';
 
 
 const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(cors)
+app.use(cors())
 
-app.use('/api',usersRouter)
-
+app.use('/api', usersRouter)
+app.use('/api', projectsRouter)
 const serverPort = 5001
 
 app.listen(serverPort, async () => {
