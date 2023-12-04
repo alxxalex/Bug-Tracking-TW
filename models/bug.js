@@ -21,7 +21,7 @@ const Bug = sequelize.define(
             type: DataTypes.STRING,
             allowNull: false
         },
-        resolutionPriority: {
+        priority: {
             type: DataTypes.STRING,
             allowNull: false
         },
@@ -35,13 +35,7 @@ const Bug = sequelize.define(
         },
         assignedProjectMember:{
             type: DataTypes.STRING,
-        },
-        raisedAt:{
-            type: DataTypes.STRING,
-            allowNull: false
-        } 
-
-
+        }
 
     }
 )

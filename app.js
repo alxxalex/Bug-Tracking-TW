@@ -6,6 +6,7 @@ import { Project } from "./models/project.js";
 import { Bug } from "./models/bug.js";
 import { usersRouter } from './Routes/usersRouter.js';
 import { projectsRouter } from './Routes/projectsRouter.js';
+import { bugsRouter } from './Routes/bugsRouter.js';
 
 
 const app = express()
@@ -16,6 +17,7 @@ app.use(cors())
 
 app.use('/api', usersRouter)
 app.use('/api', projectsRouter)
+app.use('/api', bugsRouter)
 const serverPort = 5001
 
 app.listen(serverPort, async () => {
