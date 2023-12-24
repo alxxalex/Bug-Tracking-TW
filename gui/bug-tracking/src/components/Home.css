@@ -1,0 +1,19 @@
+.home {
+    height: 100vh;
+    background-color: #6699CC;
+}
+
+.button-container{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.signup-button,
+.login-button{
+    margin-left: 10px;
+}
+
+.login-button{
+    margin-right: 20px;
+}
+
