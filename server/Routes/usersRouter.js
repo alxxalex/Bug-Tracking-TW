@@ -1,10 +1,12 @@
-import express from 'express'
+import express from "express";
 import * as userControllerMethods from "../Controllers/userController.js";
 
-const router = express.Router()
+const router = express.Router();
 
-router.post('/newUser', userControllerMethods.insertUserIntoDb)
+router.post("/newUser", userControllerMethods.insertUserIntoDb);
 
-router.get('/users', userControllerMethods.getUsersFromDb)
+router.get("/users", userControllerMethods.getUsersFromDb);
 
-export { router as usersRouter } 
+router.post("/authenticate", userControllerMethods.authenticateUser);
+
+export { router as usersRouter };
