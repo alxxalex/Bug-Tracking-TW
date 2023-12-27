@@ -25,26 +25,28 @@ function Home() {
   }, []);
 
   return (
-    <div className="home">
-      <button className="button">Add Project</button>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {projects.map((project, index) => (
-            <tr key={index}>
-              <td>{project.name}</td>
-              <td className="td-button">
-                <button className="button">Test</button>
-              </td>
+    <div className="home-container">
+      <div className="home">
+        <button className="button">Add Project</button>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {projects.map((project, index) => (
+              <tr key={index}>
+                <td>{project.name}</td>
+                <td className="td-button">
+                  <button className="button">Test</button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
