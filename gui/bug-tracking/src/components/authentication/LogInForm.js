@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+
 import "./LogInForm.css";
 
 const SERVER = "http://localhost:5001";
@@ -15,7 +17,7 @@ function LogInForm(props) {
     password: password,
   };
 
-  const handleClick = async () => {
+  const handleLogInClick = async () => {
     try {
       const response = await fetch(`${SERVER}/api/authenticate`, {
         method: "POST",
@@ -26,7 +28,7 @@ function LogInForm(props) {
       });
 
       if (response.ok) {
-        navigate("/");
+        navigate("/home");
       } else {
         setError("Authentication failed");
       }
@@ -35,6 +37,10 @@ function LogInForm(props) {
       setError("An error occurred");
     }
   };
+
+  // function handleSignUpClick() {
+  //   navigate("/signup");
+  // }
 
   return (
     <div className="login-container">
@@ -56,8 +62,12 @@ function LogInForm(props) {
           />
         </div>
         <div className="login">
-          <input type="button" value="Log in" onClick={handleClick} />
+          <input type="button" value="Log in" onClick={handleLogInClick} />
         </div>
+        Don't have an account?
+        <Link to="/signup">
+          <span className="signup" x >Sign up</span>
+        </Link>
       </div>
     </div>
   );
