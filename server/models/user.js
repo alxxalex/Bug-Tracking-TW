@@ -23,9 +23,8 @@ const User = sequelize.define("User", {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  tester: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
+  role: {
+    type: DataTypes.STRING,
   },
 });
 

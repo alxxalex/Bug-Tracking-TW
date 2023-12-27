@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import "./LogInForm.css";
+import { useUser } from "../context/UserContext";
 
 const SERVER = "http://localhost:5001";
 
@@ -10,6 +11,7 @@ function LogInForm(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
+  const { login } = useUser();
   let navigate = useNavigate();
 
   const userData = {
@@ -28,6 +30,8 @@ function LogInForm(props) {
       });
 
       if (response.ok) {
+        const user = await response.json();
+        login(user);
         navigate("/home");
       } else {
         setError("Authentication failed");

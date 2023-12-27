@@ -14,6 +14,7 @@ function SignUpForm(_props) {
     name: name,
     email: email,
     password: password,
+    role: "Student"
   };
   let navigate = useNavigate();
   const addUser = async () => {
