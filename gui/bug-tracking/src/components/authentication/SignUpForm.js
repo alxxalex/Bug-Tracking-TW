@@ -50,14 +50,14 @@ function SignUpForm(_props) {
               onChange={(evt) => setName(evt.target.value)}
             />
           </div>
-          <div className="email">
+          <div id="email">
             <input
               type="text"
               placeholder="Enter your email"
               onChange={(evt) => setEmail(evt.target.value)}
             />
           </div>
-          <div className="password">
+          <div id="password">
             <input
               type="password"
               placeholder="Enter your password"
