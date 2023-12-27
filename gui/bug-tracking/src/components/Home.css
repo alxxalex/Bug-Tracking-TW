@@ -1,12 +1,13 @@
 /* General Styles */
 .home-container {
-    background-color: #1a1a1a;
+    background-color: #28282b;
     color: #fff;
     font-family: 'Arial', sans-serif;
     display: flex;
     justify-content: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden;
 }
 
 .home {

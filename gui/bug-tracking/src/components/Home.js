@@ -1,6 +1,7 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
 import { useUser } from "./context/UserContext";
+import { Link } from "react-router-dom";
 
 const SERVER = "http://localhost:5001";
 
@@ -30,7 +31,9 @@ function Home() {
     <div className="home-container">
       <div className="home">
         <p>Welcome {loggedInUser.name}, {loggedInUser.role}</p>
-        <button className="button">Add Project</button>
+        <Link to="/addProject">
+          <button className="button">Add Project</button>
+        </Link>
         <table>
           <thead>
             <tr>
@@ -43,6 +46,7 @@ function Home() {
               <tr key={index}>
                 <td>{project.name}</td>
                 <td className="td-button">
+
                   <button className="button">Test</button>
                 </td>
               </tr>
@@ -50,7 +54,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 
