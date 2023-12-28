@@ -9,4 +9,6 @@ router.get("/users", userControllerMethods.getUsersFromDb);
 
 router.post("/authenticate", userControllerMethods.authenticateUser);
 
+router.put("/updateUser/:userId", userControllerMethods.updateUser);
+
 export { router as usersRouter };

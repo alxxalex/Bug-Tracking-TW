@@ -1,22 +1,37 @@
 import { useNavigate } from 'react-router-dom';
 import './NewProjectForm.css'
 import { useState } from "react";
+import { useUser } from '../context/UserContext';
 
 const SERVER = "http://localhost:5001";
 
 function NewProjectForm() {
     const [name, setName] = useState("")
     const [repositoryLink, setRepositoryLink] = useState("")
+    const { loggedInUser } = useUser();
+    const { login } = useUser();
 
     const projectData = {
         name: name,
         repositoryLink: repositoryLink
     }
 
+    const updateRoleData = {
+        role: "MP"
+    }
+
     let navigate = useNavigate();
 
     const submitProject = async () => {
         try {
+            const responseFromUser = await fetch(`${SERVER}/api/updateUser/${loggedInUser.id}`, {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(updateRoleData),
+            })
+
             const response = await fetch(`${SERVER}/api/newProject`, {
                 method: "post",
                 headers: {
@@ -25,9 +40,15 @@ function NewProjectForm() {
                 body: JSON.stringify(projectData),
             });
 
-            if (response.ok) {
+
+
+            if (response.ok && responseFromUser.ok) {
+                const updatedUser = await responseFromUser.json();
+                console.log(updatedUser)
+                login(updatedUser)
                 navigate("/home");
             }
+
         } catch (error) {
             console.error("Error:", error);
         }

@@ -27,13 +27,17 @@ function Home() {
     fetchProjects();
   }, []);
 
+  const isStudent = loggedInUser && loggedInUser.role === 'Student';
+
   return (
     <div className="home-container">
       <div className="home">
         <p>Welcome {loggedInUser.name}, {loggedInUser.role}</p>
-        <Link to="/addProject">
-          <button className="button">Add Project</button>
-        </Link>
+        {isStudent && (
+          <Link to="/addProject">
+            <button className="button">Add Project</button>
+          </Link>
+          )}
         <table>
           <thead>
             <tr>
