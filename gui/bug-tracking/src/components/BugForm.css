@@ -1,0 +1,38 @@
+.bugForm-container{
+    display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100vh;
+	background-color: #28282b;
+}
+
+.bugForm{
+    width: 300px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	height: 50%;
+}
+
+.bugForm input {
+	width: calc(100% - 20px);
+    	margin-bottom: 15px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.bugForm select {
+	width: 100%;
+	margin-bottom: 15px;
+	padding: 8px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+.submitBug{
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}

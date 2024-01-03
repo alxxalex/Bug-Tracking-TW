@@ -66,7 +66,7 @@ function LogInForm(props) {
         </div>
         Don't have an account?
         <Link to="/signup">
-          <span className="signup" x >Sign up</span>
+          <span className="signup" >Sign up</span>
         </Link>
       </div>
     </div>
