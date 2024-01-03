@@ -1,11 +1,14 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
+import { useUser } from "./context/UserContext";
+import "./Home.css";
 import { Link } from "react-router-dom";
 
 const SERVER = "http://localhost:5001";
 
 function Home() {
   const [projects, setProjects] = useState([]);
+  const { loggedInUser } = useUser();
 
   const fetchProjects = async () => {
     try {
@@ -25,10 +28,17 @@ function Home() {
     fetchProjects();
   }, []);
 
+  const isStudent = loggedInUser && loggedInUser.role === 'Student';
+
   return (
     <div className="home-container">
       <div className="home">
-        <button className="button">Add Project</button>
+        <p>Welcome {loggedInUser.name}, {loggedInUser.role}</p>
+        {isStudent && (
+          <Link to="/addProject">
+            <button className="button">Add Project</button>
+          </Link>
+          )}
         <table>
           <thead>
             <tr>
@@ -38,19 +48,18 @@ function Home() {
           </thead>
           <tbody>
             {projects.map((project, index) => (
-              <tr key={index} >
+              <tr key={index}>
                 <td>{project.name}</td>
                 <td className="td-button">
-                  <Link to="/bugform">
-                    <button className="button">Add bug</button>
-                  </Link>
+
+                  <button className="button">Test</button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 
