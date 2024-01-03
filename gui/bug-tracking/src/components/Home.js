@@ -38,7 +38,7 @@ function Home() {
           <Link to="/addProject">
             <button className="button">Add Project</button>
           </Link>
-          )}
+        )}
         <table>
           <thead>
             <tr>
@@ -51,8 +51,9 @@ function Home() {
               <tr key={index}>
                 <td>{project.name}</td>
                 <td className="td-button">
-
-                  <button className="button">Test</button>
+                  <Link to="/bugForm">
+                    <button className="button">Add a bug</button>
+                  </Link>
                 </td>
               </tr>
             ))}
