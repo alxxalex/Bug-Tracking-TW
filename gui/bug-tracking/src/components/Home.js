@@ -1,7 +1,6 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
 import { useUser } from "./context/UserContext";
-import "./Home.css";
 import { Link } from "react-router-dom";
 
 const SERVER = "http://localhost:5001";
@@ -14,13 +13,13 @@ function Home() {
     try {
       const response = await fetch(`${SERVER}/api/projects`);
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error("Network response was not ok");
       }
 
       const projectsData = await response.json();
       setProjects(projectsData);
     } catch (error) {
-      console.error('Error fetching projects:', error.message);
+      console.error("Error fetching projects:", error.message);
     }
   };
 
@@ -28,15 +27,23 @@ function Home() {
     fetchProjects();
   }, []);
 
-  const isStudent = loggedInUser && loggedInUser.role === 'Student';
+  const isStudent = loggedInUser && loggedInUser.role === "Student";
+  const isMP = loggedInUser && loggedInUser.role === "MP";
 
   return (
     <div className="home-container">
       <div className="home">
-        <p>Welcome {loggedInUser.name}, {loggedInUser.role}</p>
-        {isStudent && (
+        <p>
+          Welcome {loggedInUser.name}, {loggedInUser.role}
+        </p>
+        {(isStudent || isMP) && (
           <Link to="/addProject">
             <button className="button">Add Project</button>
+          </Link>
+        )}
+        {isStudent && (
+          <Link to="/teamForm">
+            <button className="button">Add Team</button>
           </Link>
         )}
         <table>
@@ -60,7 +67,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div >
+    </div>
   );
 }
 

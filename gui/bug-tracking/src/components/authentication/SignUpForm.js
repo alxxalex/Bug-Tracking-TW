@@ -4,7 +4,7 @@ import "./SignUpForm.css";
 
 const SERVER = "http://localhost:5001";
 
-function SignUpForm(_props) {
+function SignUpForm() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +14,7 @@ function SignUpForm(_props) {
     name: name,
     email: email,
     password: password,
-    role: "Student"
+    role: "Student",
   };
   let navigate = useNavigate();
   const addUser = async () => {
