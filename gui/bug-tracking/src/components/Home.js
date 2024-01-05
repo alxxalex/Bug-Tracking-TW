@@ -1,13 +1,14 @@
 import "./Home.css";
 import { useEffect, useState } from "react";
 import { useUser } from "./context/UserContext";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SERVER = "http://localhost:5001";
 
 function Home() {
   const [projects, setProjects] = useState([]);
   const { loggedInUser } = useUser();
+  const { login } = useUser();
 
   const fetchProjects = async () => {
     try {
@@ -29,7 +30,37 @@ function Home() {
 
   const isStudent = loggedInUser && loggedInUser.role === "Student";
   const isMP = loggedInUser && loggedInUser.role === "MP";
+  const isTester = loggedInUser && loggedInUser.role === "Tester";
+  let navigate = useNavigate();
 
+  const updateRoleData = {
+    role: "Tester",
+  };
+
+  const becomeTester = async () => {
+    try {
+      const responseFromUser = await fetch(
+        `${SERVER}/api/updateUser/${loggedInUser.id}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateRoleData),
+        }
+      );
+
+      if (responseFromUser.ok) {
+        const updatedUser = await responseFromUser.json();
+        console.log(updatedUser);
+        login(updatedUser);
+        navigate("/home");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+    navigate("/home");
+  };
   return (
     <div className="home-container">
       <div className="home">
@@ -46,6 +77,11 @@ function Home() {
             <button className="button">Add Team</button>
           </Link>
         )}
+        {isStudent && (
+          <button className="button" onClick={() => becomeTester()}>
+            Become a Tester
+          </button>
+        )}
         <table>
           <thead>
             <tr>
@@ -58,9 +94,16 @@ function Home() {
               <tr key={index}>
                 <td>{project.name}</td>
                 <td className="td-button">
-                  <Link to="/bugForm">
-                    <button className="button">Add a bug</button>
-                  </Link>
+                  {isTester && (
+                    <Link to="/bugForm">
+                      <button className="button">Add a bug</button>
+                    </Link>
+                  )}
+                  {isMP && (
+                    <Link to={`/editProject/${project.id}`}>
+                      <button className="button">Edit Project</button>
+                    </Link>
+                  )}
                 </td>
               </tr>
             ))}

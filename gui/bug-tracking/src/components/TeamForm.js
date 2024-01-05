@@ -8,6 +8,7 @@ const SERVER = "http://localhost:5001";
 function TeamForm() {
   const [name, setName] = useState("");
   const { loggedInUser } = useUser();
+  const { login } = useUser();
 
   let navigate = useNavigate();
 
@@ -16,15 +17,37 @@ function TeamForm() {
     userId: loggedInUser.id,
   };
 
+  const updateRoleData = {
+    role: "MP",
+  };
+
   const addTeam = async () => {
     try {
-      await fetch(`${SERVER}/api/newTeam`, {
+      const responseFromUser = await fetch(
+        `${SERVER}/api/updateUser/${loggedInUser.id}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updateRoleData),
+        }
+      );
+
+      const response = await fetch(`${SERVER}/api/newTeam`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(teamData),
       });
+
+      if (response.ok && responseFromUser.ok) {
+        const updatedUser = await responseFromUser.json();
+        console.log(updatedUser);
+        login(updatedUser);
+        navigate("/home");
+      }
     } catch (error) {
       console.error("Error:", error);
     }
