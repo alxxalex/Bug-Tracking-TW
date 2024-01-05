@@ -59,13 +59,13 @@ function EditProjectForm() {
         <input
           type="text"
           placeholder="Enter project name"
-          value={name} // Use 'value' instead of 'onChange' to set initial value
+          value={name}
           onChange={(evt) => setName(evt.target.value)}
         />
         <input
           type="text"
           placeholder="Enter repository link"
-          value={repositoryLink} // Use 'value' instead of 'onChange' to set initial value
+          value={repositoryLink}
           onChange={(evt) => setRepositoryLink(evt.target.value)}
         />
         <div className="submitProject">
