@@ -1,28 +1,27 @@
 import { useNavigate } from "react-router-dom";
-import "./NewProjectForm.css";
 import { useState } from "react";
-import { useUser } from "../context/UserContext";
+import { useUser } from "./context/UserContext";
+import "./TeamForm.css";
 
 const SERVER = "http://localhost:5001";
 
-function NewProjectForm() {
+function TeamForm() {
   const [name, setName] = useState("");
-  const [repositoryLink, setRepositoryLink] = useState("");
   const { loggedInUser } = useUser();
   const { login } = useUser();
 
-  const projectData = {
+  let navigate = useNavigate();
+
+  const teamData = {
     name: name,
-    repositoryLink: repositoryLink,
+    userId: loggedInUser.id,
   };
 
   const updateRoleData = {
     role: "MP",
   };
 
-  let navigate = useNavigate();
-
-  const submitProject = async () => {
+  const addTeam = async () => {
     try {
       const responseFromUser = await fetch(
         `${SERVER}/api/updateUser/${loggedInUser.id}`,
@@ -35,12 +34,12 @@ function NewProjectForm() {
         }
       );
 
-      const response = await fetch(`${SERVER}/api/newProject`, {
+      const response = await fetch(`${SERVER}/api/newTeam`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(projectData),
+        body: JSON.stringify(teamData),
       });
 
       if (response.ok && responseFromUser.ok) {
@@ -52,26 +51,24 @@ function NewProjectForm() {
     } catch (error) {
       console.error("Error:", error);
     }
+    navigate("/home");
   };
+
   return (
     <div className="container">
-      <div className="addProjectForm">
+      <div className="addTeamForm">
         <input
           type="text"
-          placeholder="Enter project name"
+          placeholder="Enter team name"
           onChange={(evt) => setName(evt.target.value)}
         />
-        <input
-          type="text"
-          placeholder="Enter repository link"
-          onChange={(evt) => setRepositoryLink(evt.target.value)}
-        />
-        <div className="submitProject">
+
+        <div className="submitTeam">
           <input
             className="submitButton"
             type="button"
-            value="Add project"
-            onClick={submitProject}
+            value="Add team"
+            onClick={addTeam}
           />
         </div>
       </div>
@@ -79,4 +76,4 @@ function NewProjectForm() {
   );
 }
 
-export default NewProjectForm;
+export default TeamForm;

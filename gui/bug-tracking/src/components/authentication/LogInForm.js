@@ -7,7 +7,7 @@ import { useUser } from "../context/UserContext";
 
 const SERVER = "http://localhost:5001";
 
-function LogInForm(props) {
+function LogInForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
@@ -50,7 +50,6 @@ function LogInForm(props) {
     <div className="login-container">
       <div className="login-form">
         {error && <div className="error-message">{error}</div>}
-
         <div className="email">
           <input
             type="text"
@@ -70,7 +69,7 @@ function LogInForm(props) {
         </div>
         Don't have an account?
         <Link to="/signup">
-          <span className="signup" >Sign up</span>
+          <span className="signup">Sign up</span>
         </Link>
       </div>
     </div>
