@@ -7,4 +7,6 @@ router.post("/newBug", bugControllerMethods.insertBugIntoDb);
 
 router.get("/bugs", bugControllerMethods.getBugsFromDb);
 
+router.get("/bugs/:projectName",bugControllerMethods.getBugsForProject)
+
 export { router as bugsRouter };

@@ -62,6 +62,7 @@ function Home() {
     navigate("/home");
   };
   return (
+
     <div className="home-container">
       <div className="home">
         <p>
@@ -95,15 +96,23 @@ function Home() {
                 <td>{project.name}</td>
                 <td className="td-button">
                   {isTester && (
-                    <Link to="/bugForm">
+                    <Link to={`/bugForm/${encodeURIComponent(project.name)}`}>
                       <button className="button">Add a bug</button>
                     </Link>
                   )}
+
                   {isMP && (
-                    <Link to={`/editProject/${project.id}`}>
-                      <button className="button">Edit Project</button>
+                    <Link to={`/bugs/${project.name}`}>
+                      <button className="button">See Bugs</button>
                     </Link>
                   )}
+
+                  {isMP && (
+                    <Link to={`/editProject/${project.id}`}>
+                      <i className="fa fa-pencil"></i>
+                    </Link>
+                  )}
+
                 </td>
               </tr>
             ))}
