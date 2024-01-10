@@ -5,7 +5,7 @@ import LogInForm from "./components/authentication/LogInForm";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import NewProjectForm from "./components/projectForm/NewProjectForm";
 import BugForm from "./components/BugForm";
-import TeamForm from "./components/TeamForm";
+import JoinProjectForm from "./components/JoinProjectForm";
 import EditProjectForm from "./components/editProject/editProjectForm";
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
           <Route path="/home" element={<Home />}></Route>
           <Route path="/addProject" element={<NewProjectForm />}></Route>
           <Route path="/bugForm" element={<BugForm />}></Route>
-          <Route path="/teamForm" element={<TeamForm />}></Route>
+          <Route path="/joinProjectForm" element={<JoinProjectForm />}></Route>
           <Route
             path="/editProject/:projectId"
             element={<EditProjectForm />}

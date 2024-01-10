@@ -72,11 +72,7 @@ function Home() {
             <button className="button">Add Project</button>
           </Link>
         )}
-        {isStudent && (
-          <Link to="/teamForm">
-            <button className="button">Add Team</button>
-          </Link>
-        )}
+
         {isStudent && (
           <button className="button" onClick={() => becomeTester()}>
             Become a Tester
@@ -102,6 +98,11 @@ function Home() {
                   {isMP && (
                     <Link to={`/editProject/${project.id}`}>
                       <button className="button">Edit Project</button>
+                    </Link>
+                  )}
+                  {isStudent && (
+                    <Link to="/joinProjectForm">
+                      <button className="button">Join project</button>
                     </Link>
                   )}
                 </td>
