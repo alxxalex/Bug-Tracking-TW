@@ -34,6 +34,15 @@ const Bug = sequelize.define("Bug", {
   assignedProjectMember: {
     type: DataTypes.STRING,
   },
+  projectName: {
+    type: DataTypes.STRING,
+  },
+  status: {
+    type: DataTypes.STRING,
+  },
+  commitLinkBugSolved: {
+    type: DataTypes.STRING,
+  },
 });
 
 export { Bug };

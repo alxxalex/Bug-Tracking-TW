@@ -1,6 +1,8 @@
 import "./BugForm.css";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../context/UserContext";
+import { useParams } from 'react-router-dom';
 
 function BugForm() {
     const [name, setName] = useState("");
@@ -9,7 +11,10 @@ function BugForm() {
     const [commitLink, setcommitLink] = useState("");
     const [priority, setPriority] = useState("");
     const [error, setError] = useState(null);
+    const { loggedInUser } = useUser();
+    const { projectName } = useParams();
     let navigate = useNavigate();
+
 
     const SERVER = "http://localhost:5001";
 
@@ -18,9 +23,12 @@ function BugForm() {
         description: description,
         severity: severity || 'High',
         commitLink: commitLink,
-        raisedBy: "AlexTest",
-        assignedProjectMember: "ProjectTest",
-        priority: priority || 'High'
+        raisedBy: loggedInUser.name,
+        assignedProjectMember: "",
+        priority: priority || 'High',
+        projectName: projectName,
+        status: "Unsolved",
+        commitLinkBugSolved: ""
     }
 
     async function submitBug() {
