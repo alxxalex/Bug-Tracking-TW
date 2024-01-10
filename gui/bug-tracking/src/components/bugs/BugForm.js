@@ -26,7 +26,9 @@ function BugForm() {
         raisedBy: loggedInUser.name,
         assignedProjectMember: "",
         priority: priority || 'High',
-        projectName: projectName
+        projectName: projectName,
+        status: "Unsolved",
+        commitLinkBugSolved: ""
     }
 
     async function submitBug() {

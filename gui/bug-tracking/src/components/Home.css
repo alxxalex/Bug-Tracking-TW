@@ -39,10 +39,6 @@ tbody tr:nth-child(even) {
 	background-color: #333;
 }
 
-tbody tr:hover {
-	background-color: #555;
-}
-
 .button {
 	display: inline-block;
 	padding: 10px 15px;
@@ -102,10 +98,6 @@ tbody tr:nth-child(even) {
 	background-color: #333;
 }
 
-tbody tr:hover {
-	background-color: #555;
-}
-
 .button {
 	display: inline-block;
 	padding: 10px 15px;
@@ -130,8 +122,13 @@ tbody tr:hover {
 	padding-right: 20px;
 }
 
-.fa-pencil{
+.fa-pencil {
 	color: #45a049;
 	margin-left: 15px;
 	font-size: 18px;
+}
+
+td input[type='text'] {
+	border-radius: 7px;
+	box-shadow: 1px 1px 1px white;
 }
