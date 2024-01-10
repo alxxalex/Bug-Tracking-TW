@@ -6,7 +6,7 @@
     background-color: #28282b;
 }
 
-.addTeamForm {
+.joinProjectForm {
     width: 300px;
     padding: 20px;
     background-color: white;
@@ -15,7 +15,7 @@
     height: 15%;
 }
 
-.addTeamForm input {
+.joinProjectForm input {
     width: calc(100% - 20px);
     margin-bottom: 15px;
     padding: 8px;

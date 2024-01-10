@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useUser } from "./context/UserContext";
-import "./TeamForm.css";
+import "./JoinProjectForm.css";
 
 const SERVER = "http://localhost:5001";
 
-function TeamForm() {
+function JoinProjectForm() {
   const [name, setName] = useState("");
   const { loggedInUser } = useUser();
   const { login } = useUser();
@@ -21,7 +21,7 @@ function TeamForm() {
     role: "MP",
   };
 
-  const addTeam = async () => {
+  const joinProject = async () => {
     try {
       const responseFromUser = await fetch(
         `${SERVER}/api/updateUser/${loggedInUser.id}`,
@@ -33,14 +33,15 @@ function TeamForm() {
           body: JSON.stringify(updateRoleData),
         }
       );
-
-      const response = await fetch(`${SERVER}/api/newTeam`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(teamData),
-      });
+        
+      //fetch register user in the proejct 
+      // const response = await fetch(`${SERVER}/api/newTeam`, {
+      //   method: "post",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify(teamData),
+      // });
 
       if (response.ok && responseFromUser.ok) {
         const updatedUser = await responseFromUser.json();
@@ -56,10 +57,10 @@ function TeamForm() {
 
   return (
     <div className="container">
-      <div className="addTeamForm">
+      <div className="joinProjectForm">
         <input
           type="text"
-          placeholder="Enter team name"
+          placeholder="Enter project name"
           onChange={(evt) => setName(evt.target.value)}
         />
 
@@ -67,8 +68,8 @@ function TeamForm() {
           <input
             className="submitButton"
             type="button"
-            value="Add team"
-            onClick={addTeam}
+            value="Join Project"
+            onClick={joinProject}
           />
         </div>
       </div>
@@ -76,4 +77,4 @@ function TeamForm() {
   );
 }
 
-export default TeamForm;
+export default JoinProjectForm;
