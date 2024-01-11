@@ -35,7 +35,7 @@ function NewProjectForm() {
         }
       );
 
-      const response = await fetch(`${SERVER}/api/newProject`, {
+      const response = await fetch(`${SERVER}/api/newProject/${loggedInUser.id}`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",

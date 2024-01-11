@@ -3,7 +3,7 @@ import * as projectControllerMethods from "../Controllers/projectController.js";
 
 const router = express.Router();
 
-router.post("/newProject", projectControllerMethods.insertProjectIntoDb);
+router.post("/newProject/:userId", projectControllerMethods.insertProjectIntoDb);
 
 router.get("/projects", projectControllerMethods.getProjectsFromDb);
 
@@ -15,5 +15,7 @@ router.delete(
 router.put("/updateProject/:projectId", projectControllerMethods.updateProject);
 
 router.get("/projects/:projectId", projectControllerMethods.getProjectById);
+
+router.get("/projects/user/:userId", projectControllerMethods.getProjectsByUser);
 
 export { router as projectsRouter };

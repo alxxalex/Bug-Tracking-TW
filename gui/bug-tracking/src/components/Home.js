@@ -10,7 +10,16 @@ function Home() {
   const { loggedInUser } = useUser();
   const { login } = useUser();
 
-  const fetchProjects = async () => {
+  const isStudent = loggedInUser && loggedInUser.role === "Student";
+  const isMP = loggedInUser && loggedInUser.role === "MP";
+  const isTester = loggedInUser && loggedInUser.role === "Tester";
+  let navigate = useNavigate();
+
+  const updateRoleData = {
+    role: "Tester",
+  };
+
+  const fetchAllProjects = async () => {
     try {
       const response = await fetch(`${SERVER}/api/projects`);
       if (!response.ok) {
@@ -24,18 +33,28 @@ function Home() {
     }
   };
 
+  const fetchProjectsForMp = async () => {
+    console.log('Fetching projects for: ' + loggedInUser.name);
+    try {
+      const response = await fetch(`${SERVER}/api/projects/user/${loggedInUser.id}`);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const projectsForMpData = await response.json();
+      setProjects(projectsForMpData);
+    } catch (error) {
+      console.error("Error fetching projects:", error.message);
+    }
+  }
+
   useEffect(() => {
-    fetchProjects();
+    if (isTester || isStudent) {
+      fetchAllProjects();
+    } else {
+      fetchProjectsForMp();
+    }
   }, []);
-
-  const isStudent = loggedInUser && loggedInUser.role === "Student";
-  const isMP = loggedInUser && loggedInUser.role === "MP";
-  const isTester = loggedInUser && loggedInUser.role === "Tester";
-  let navigate = useNavigate();
-
-  const updateRoleData = {
-    role: "Tester",
-  };
 
   const becomeTester = async () => {
     try {
@@ -61,6 +80,24 @@ function Home() {
     }
     navigate("/home");
   };
+
+  async function joinProject() {
+    const responseFromUser = await fetch(
+      `${SERVER}/api/updateUser/${loggedInUser.id}`,
+      {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: "MP",
+        }),
+      }
+    );
+
+
+  }
+
   return (
 
     <div className="home-container">
@@ -69,7 +106,7 @@ function Home() {
           Welcome {loggedInUser.name}, {loggedInUser.role}
         </p>
         {(isStudent || isMP) && (
-          <Link to="/addProject">
+          <Link to={`/addProject/${loggedInUser.id}`}>
             <button className="button">Add Project</button>
           </Link>
         )}
@@ -103,9 +140,7 @@ function Home() {
                     </Link>
                   )}
                   {isStudent && (
-                    <Link to="/joinProjectForm">
-                      <button className="button">Join project</button>
-                    </Link>
+                    <button className="button" onClick={() => { joinProject() }}>Join project</button>
                   )}
 
                   {isMP && (
@@ -119,7 +154,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 

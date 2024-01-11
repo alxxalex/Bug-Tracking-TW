@@ -1,9 +1,17 @@
 import { Project } from "../models/project.js";
+import { User } from "../models/user.js";
 
 const insertProjectIntoDb = async (req, res) => {
   try {
     const newProject = await Project.create(req.body);
-    return res.status(201).json(newProject);
+    const user = await User.findByPk(req.params.userId);
+    if (user) {
+      user.addProject(newProject);
+      await user.save();
+      return res.status(201).json(newProject);
+    } else {
+      res.status(404).json({ error: `User not found` });
+    }
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -62,10 +70,29 @@ const getProjectById = async (req, res) => {
   }
 };
 
+const getProjectsByUser = async (req, res) => {
+  try {
+    const user = await User.findByPk(req.params.userId);
+    if (user) {
+      const projects = await user.getProjects();
+      if (projects.length > 0) {
+        res.status(200).json(projects)
+      } else {
+        res.status(404).json({ error: `Projects not found` });
+      }
+    } else {
+      res.status(404).json({ error: `User not found` });
+    }
+  } catch (err) {
+    return res.status(500).json({ error: err.message });
+  }
+}
+
 export {
   insertProjectIntoDb,
   getProjectsFromDb,
   deleteProject,
   updateProject,
   getProjectById,
+  getProjectsByUser
 };

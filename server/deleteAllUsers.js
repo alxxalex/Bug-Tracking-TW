@@ -1,4 +1,5 @@
 import { User } from "./models/user.js";
+import { sequelize } from "./sequelize.js";
 
 const deleteAllUsers = async () => {
   try {
@@ -13,3 +14,4 @@ const deleteAllUsers = async () => {
 };
 
 deleteAllUsers();
+
