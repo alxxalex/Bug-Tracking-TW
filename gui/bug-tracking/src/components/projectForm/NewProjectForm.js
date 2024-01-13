@@ -35,13 +35,16 @@ function NewProjectForm() {
         }
       );
 
-      const response = await fetch(`${SERVER}/api/newProject/${loggedInUser.id}`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(projectData),
-      });
+      const response = await fetch(
+        `${SERVER}/api/newProject/${loggedInUser.id}`,
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(projectData),
+        }
+      );
 
       if (response.ok && responseFromUser.ok) {
         const updatedUser = await responseFromUser.json();
