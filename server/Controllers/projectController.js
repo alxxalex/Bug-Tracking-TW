@@ -76,7 +76,7 @@ const getProjectsByUser = async (req, res) => {
     if (user) {
       const projects = await user.getProjects();
       if (projects.length > 0) {
-        res.status(200).json(projects)
+        res.status(200).json(projects);
       } else {
         res.status(404).json({ error: `Projects not found` });
       }
@@ -86,7 +86,26 @@ const getProjectsByUser = async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: err.message });
   }
-}
+};
+
+const joinProject = async (req, res) => {
+  const { userId, projectId } = req.params;
+  try {
+    const user = await User.findByPk(userId);
+    const project = await Project.findByPk(projectId);
+
+    if (!user || !project) {
+      return res.status(404).send("User or Project not found");
+    }
+
+    await user.addProject(project);
+
+    res.status(201).send("User successfully joined the project");
+  } catch (error) {
+    console.error("Error joining project:", error);
+    res.status(500).send(error.message);
+  }
+};
 
 export {
   insertProjectIntoDb,
@@ -94,5 +113,6 @@ export {
   deleteProject,
   updateProject,
   getProjectById,
-  getProjectsByUser
+  getProjectsByUser,
+  joinProject,
 };
