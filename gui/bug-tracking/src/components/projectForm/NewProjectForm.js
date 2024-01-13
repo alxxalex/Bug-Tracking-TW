@@ -10,6 +10,7 @@ function NewProjectForm() {
   const [repositoryLink, setRepositoryLink] = useState("");
   const { loggedInUser } = useUser();
   const { login } = useUser();
+  const [error, setError] = useState(null);
 
   const projectData = {
     name: name,
@@ -51,6 +52,8 @@ function NewProjectForm() {
         console.log(updatedUser);
         login(updatedUser);
         navigate("/home");
+      } else {
+        setError("Failed to add a new project");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -59,6 +62,7 @@ function NewProjectForm() {
   return (
     <div className="container">
       <div className="addProjectForm">
+        {error && <div className="error-message">{error}</div>}
         <input
           type="text"
           placeholder="Enter project name"

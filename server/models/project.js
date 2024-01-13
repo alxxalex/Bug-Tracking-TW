@@ -14,6 +14,11 @@ const Project = sequelize.define("Project", {
   repositoryLink: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      isUrl: {
+        msg: "Must be a valid URL",
+      },
+    },
   },
 });
 
