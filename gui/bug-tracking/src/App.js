@@ -16,13 +16,16 @@ function App() {
           <Route path="/" element={<LogInForm />}></Route>
           <Route path="/signup" element={<SignUpForm />}></Route>
           <Route path="/home" element={<Home />}></Route>
-          <Route path="/addProject/:userId" element={<NewProjectForm />}></Route>
+          <Route
+            path="/addProject/:userId"
+            element={<NewProjectForm />}
+          ></Route>
           <Route path="/bugForm/:projectName" element={<BugForm />}></Route>
           <Route
             path="/editProject/:projectId"
             element={<EditProjectForm />}
           ></Route>
-          <Route path="/bugs/:projectName" element={< BugsForProject />}></Route>
+          <Route path="/bugs/:projectName" element={<BugsForProject />}></Route>
         </Routes>
       </BrowserRouter>
     </div>

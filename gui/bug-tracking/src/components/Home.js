@@ -9,11 +9,17 @@ function Home() {
   const [projects, setProjects] = useState([]);
   const { loggedInUser } = useUser();
   const { login } = useUser();
+  const { logout } = useUser();
 
   const isStudent = loggedInUser && loggedInUser.role === "Student";
   const isMP = loggedInUser && loggedInUser.role === "MP";
   const isTester = loggedInUser && loggedInUser.role === "Tester";
   let navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const updateRoleData = {
     role: "Tester",
@@ -34,9 +40,11 @@ function Home() {
   };
 
   const fetchProjectsForMp = async () => {
-    console.log('Fetching projects for: ' + loggedInUser.name);
+    console.log("Fetching projects for: " + loggedInUser.name);
     try {
-      const response = await fetch(`${SERVER}/api/projects/user/${loggedInUser.id}`);
+      const response = await fetch(
+        `${SERVER}/api/projects/user/${loggedInUser.id}`
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -46,7 +54,7 @@ function Home() {
     } catch (error) {
       console.error("Error fetching projects:", error.message);
     }
-  }
+  };
 
   useEffect(() => {
     if (isTester || isStudent) {
@@ -54,7 +62,7 @@ function Home() {
     } else {
       fetchProjectsForMp();
     }
-  }, []);
+  }, [loggedInUser.role]);
 
   const becomeTester = async () => {
     try {
@@ -81,7 +89,7 @@ function Home() {
     navigate("/home");
   };
 
-  async function joinProject() {
+  async function joinProject(projectId) {
     const responseFromUser = await fetch(
       `${SERVER}/api/updateUser/${loggedInUser.id}`,
       {
@@ -95,11 +103,28 @@ function Home() {
       }
     );
 
+    if (responseFromUser.ok) {
+      const updatedUser = await responseFromUser.json();
+      login(updatedUser);
 
+      const responseJoinProject = await fetch(
+        `${SERVER}/api/joinProject/${updatedUser.id}/${projectId}`,
+        {
+          method: "POST",
+        }
+      );
+
+      if (responseJoinProject.ok) {
+        console.log("Successfully joined the project");
+      } else {
+        console.error("Failed to join the project");
+      }
+    } else {
+      console.error("Failed to update user role");
+    }
   }
 
   return (
-
     <div className="home-container">
       <div className="home">
         <p>
@@ -116,6 +141,9 @@ function Home() {
             Become a Tester
           </button>
         )}
+        <button onClick={handleLogout} className="button">
+          Logout
+        </button>
         <table>
           <thead>
             <tr>
@@ -140,7 +168,14 @@ function Home() {
                     </Link>
                   )}
                   {isStudent && (
-                    <button className="button" onClick={() => { joinProject() }}>Join project</button>
+                    <button
+                      className="button"
+                      onClick={() => {
+                        joinProject(project.id);
+                      }}
+                    >
+                      Join project
+                    </button>
                   )}
 
                   {isMP && (
@@ -154,7 +189,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div >
+    </div>
   );
 }
 

@@ -10,6 +10,7 @@ function NewProjectForm() {
   const [repositoryLink, setRepositoryLink] = useState("");
   const { loggedInUser } = useUser();
   const { login } = useUser();
+  const [error, setError] = useState(null);
 
   const projectData = {
     name: name,
@@ -35,19 +36,24 @@ function NewProjectForm() {
         }
       );
 
-      const response = await fetch(`${SERVER}/api/newProject/${loggedInUser.id}`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(projectData),
-      });
+      const response = await fetch(
+        `${SERVER}/api/newProject/${loggedInUser.id}`,
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(projectData),
+        }
+      );
 
       if (response.ok && responseFromUser.ok) {
         const updatedUser = await responseFromUser.json();
         console.log(updatedUser);
         login(updatedUser);
         navigate("/home");
+      } else {
+        setError("Failed to add a new project");
       }
     } catch (error) {
       console.error("Error:", error);
@@ -56,6 +62,7 @@ function NewProjectForm() {
   return (
     <div className="container">
       <div className="addProjectForm">
+        {error && <div className="error-message">{error}</div>}
         <input
           type="text"
           placeholder="Enter project name"

@@ -26,6 +26,11 @@ const Bug = sequelize.define("Bug", {
   commitLink: {
     type: DataTypes.STRING,
     allowNull: false,
+    validate: {
+      isUrl: {
+        msg: "Must be a valid URL",
+      },
+    },
   },
   raisedBy: {
     type: DataTypes.STRING,
@@ -42,6 +47,11 @@ const Bug = sequelize.define("Bug", {
   },
   commitLinkBugSolved: {
     type: DataTypes.STRING,
+    validate: {
+      isUrl: {
+        msg: "Must be a valid URL",
+      },
+    },
   },
 });
 

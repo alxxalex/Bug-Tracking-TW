@@ -19,18 +19,18 @@ const getUsersFromDb = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  console.log("Out")
+  console.log("Out");
   const user = await User.findByPk(req.params.userId);
   if (user) {
-    console.log(user)
+    console.log(user);
     const updatedUser = await user.update(req.body);
-    return res.status(200).json(updatedUser)
+    return res.status(200).json(updatedUser);
   } else {
     return res
       .status(404)
-      .json({ error: `User with id ${req.params.userId} not found` })
+      .json({ error: `User with id ${req.params.userId} not found` });
   }
-}
+};
 
 const authenticateUser = async (req, res) => {
   const { email, password } = req.body;
