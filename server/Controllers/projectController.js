@@ -43,10 +43,8 @@ const deleteProject = async (req, res) => {
 };
 
 const updateProject = async (req, res) => {
-  console.log("Out");
   const project = await Project.findByPk(req.params.projectId);
   if (project) {
-    console.log(project);
     const updatedProject = await project.update(req.body);
     return res.status(200).json(updatedProject);
   } else {

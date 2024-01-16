@@ -19,7 +19,7 @@ Project.belongsToMany(User, {
 });
 
 Project.hasMany(Bug);
-
+Bug.belongsTo(Project);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -12,7 +12,7 @@ function BugForm() {
   const [priority, setPriority] = useState("");
   const [error, setError] = useState(null);
   const { loggedInUser } = useUser();
-  const { projectName } = useParams();
+  const { projectId } = useParams();
   let navigate = useNavigate();
 
   const SERVER = "http://localhost:5001";
@@ -25,14 +25,13 @@ function BugForm() {
     raisedBy: loggedInUser.name,
     assignedProjectMember: "",
     priority: priority || "High",
-    projectName: projectName,
     status: "Unsolved",
     commitLinkBugSolved: "",
   };
 
   async function submitBug() {
     try {
-      const response = await fetch(`${SERVER}/api/newBug`, {
+      const response = await fetch(`${SERVER}/api/newBug/${projectId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -42,9 +41,8 @@ function BugForm() {
 
       if (response.ok) {
         navigate("/home");
-      } else {
-        setError("Authentication failed");
       }
+
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred");
@@ -82,7 +80,7 @@ function BugForm() {
           onChange={(evt) => setcommitLink(evt.target.value)}
         />
 
-        <label for="Priority: ">Priority: </label>
+        <label htmlFor="Priority: ">Priority: </label>
         <select
           id="priorities"
           name="priorities"

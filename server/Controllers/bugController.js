@@ -1,9 +1,17 @@
 import { Bug } from "../models/bug.js";
+import { Project } from "../models/project.js";
 
 const insertBugIntoDb = async (req, res) => {
   try {
+    const project = await Project.findByPk(req.params.projectId)
     const newBug = await Bug.create(req.body);
-    return res.status(201).json(newBug);
+    if (project) {
+      project.addBug(newBug);
+      await newBug.save();
+      return res.status(201).json(newBug);
+    } else {
+      return res.status(404).json({ error: `Project with id ${req.params.projectId} not found` })
+    }
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -20,22 +28,23 @@ const getBugsFromDb = async (req, res) => {
 
 const getBugsForProject = async (req, res) => {
   try {
-    const { projectName } = req.params;
+    const projectId = req.params.projectId;
 
-    if (!projectName) {
-      return res.status(400).json({ message: "Project name is required" });
-    }
+    const project = await Project.findByPk(projectId)
+    if (project) {
+      const bugsForProject = await project.getBugs();
 
-    const bugsForProject = await Bug.findAll({
-      where: { projectName },
-    });
-
-    if (bugsForProject.length === 0) {
+      if (bugsForProject.length === 0) {
+        return res
+          .status(404)
+          .json({ message: "No bugs found for this project" });
+      }
+      return res.status(200).json(bugsForProject);
+    } else {
       return res
         .status(404)
-        .json({ message: "No bugs found for this project" });
+        .json({ message: "Project not found" });
     }
-    return res.status(200).json(bugsForProject);
   } catch (err) {
     return res.status(500).json(err);
   }
@@ -43,8 +52,9 @@ const getBugsForProject = async (req, res) => {
 
 const updateBugStatus = async (req, res) => {
   try {
-    const { id, status } = req.body;
-    if (!id || !status) {
+    const { id, status, assignedProjectMember } = req.body;
+
+    if (!id || !status || !assignedProjectMember) {
       return res
         .status(400)
         .json({ message: "Bug ID and new status are required" });
@@ -55,9 +65,14 @@ const updateBugStatus = async (req, res) => {
     if (!bugToUpdate) {
       return res.status(404).json({ message: "Bug not found" });
     }
-
-    bugToUpdate.status = status;
-    await bugToUpdate.save();
+    if (bugToUpdate.assignedProjectMember === "") {
+      bugToUpdate.assignedProjectMember = assignedProjectMember;
+      bugToUpdate.status = status;
+      await bugToUpdate.save();
+    } else if (bugToUpdate.assignedProjectMember == assignedProjectMember) {
+      bugToUpdate.status = status;
+      await bugToUpdate.save();
+    }
 
     return res.status(200).json(bugToUpdate);
   } catch (err) {

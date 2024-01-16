@@ -45,11 +45,11 @@ function NewProjectForm() {
           },
           body: JSON.stringify(projectData),
         }
+
       );
 
       if (response.ok && responseFromUser.ok) {
         const updatedUser = await responseFromUser.json();
-        console.log(updatedUser);
         login(updatedUser);
         navigate("/home");
       } else {

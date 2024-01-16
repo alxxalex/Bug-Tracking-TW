@@ -39,19 +39,11 @@ const Bug = sequelize.define("Bug", {
   assignedProjectMember: {
     type: DataTypes.STRING,
   },
-  projectName: {
-    type: DataTypes.STRING,
-  },
   status: {
     type: DataTypes.STRING,
   },
   commitLinkBugSolved: {
     type: DataTypes.STRING,
-    validate: {
-      isUrl: {
-        msg: "Must be a valid URL",
-      },
-    },
   },
 });
 

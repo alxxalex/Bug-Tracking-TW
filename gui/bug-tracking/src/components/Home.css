@@ -131,3 +131,11 @@ td input[type='text'] {
 	border-radius: 7px;
 	box-shadow: 1px 1px 1px white;
 }
+
+#logOut{
+	position: absolute;
+	top: 5%;
+	left: 93%;
+	font-size:34px;
+	cursor: pointer;
+}

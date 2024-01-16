@@ -14,12 +14,12 @@ function EditProjectForm() {
     const fetchProjectDetails = async () => {
       try {
         const response = await fetch(`${SERVER}/api/projects/${projectId}`);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+        if (response.ok) {
+          const projectData = await response.json();
+          setName(projectData.name);
+          setRepositoryLink(projectData.repositoryLink);
         }
-        const projectData = await response.json();
-        setName(projectData.name);
-        setRepositoryLink(projectData.repositoryLink);
+
       } catch (error) {
         console.error("Error fetching project details:", error.message);
       }
@@ -45,7 +45,6 @@ function EditProjectForm() {
 
       if (response.ok) {
         const updatedProject = await response.json();
-        console.log(updatedProject);
         navigate("/home");
       }
     } catch (error) {

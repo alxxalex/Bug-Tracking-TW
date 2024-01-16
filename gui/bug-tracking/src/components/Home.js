@@ -28,12 +28,12 @@ function Home() {
   const fetchAllProjects = async () => {
     try {
       const response = await fetch(`${SERVER}/api/projects`);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+
+      if (response.ok) {
+        const projectsData = await response.json();
+        setProjects(projectsData);
       }
 
-      const projectsData = await response.json();
-      setProjects(projectsData);
     } catch (error) {
       console.error("Error fetching projects:", error.message);
     }
@@ -45,12 +45,11 @@ function Home() {
       const response = await fetch(
         `${SERVER}/api/projects/user/${loggedInUser.id}`
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.ok) {
+        const projectsForMpData = await response.json();
+        setProjects(projectsForMpData);
       }
 
-      const projectsForMpData = await response.json();
-      setProjects(projectsForMpData);
     } catch (error) {
       console.error("Error fetching projects:", error.message);
     }
@@ -79,7 +78,6 @@ function Home() {
 
       if (responseFromUser.ok) {
         const updatedUser = await responseFromUser.json();
-        console.log(updatedUser);
         login(updatedUser);
         navigate("/home");
       }
@@ -125,7 +123,9 @@ function Home() {
   }
 
   return (
+
     <div className="home-container">
+      <i id="logOut" className="fa fa-sign-out" onClick={handleLogout}></i>
       <div className="home">
         <p>
           Welcome {loggedInUser.name}, {loggedInUser.role}
@@ -141,9 +141,8 @@ function Home() {
             Become a Tester
           </button>
         )}
-        <button onClick={handleLogout} className="button">
-          Logout
-        </button>
+
+
         <table>
           <thead>
             <tr>
@@ -157,13 +156,13 @@ function Home() {
                 <td>{project.name}</td>
                 <td className="td-button">
                   {isTester && (
-                    <Link to={`/bugForm/${encodeURIComponent(project.name)}`}>
+                    <Link to={`/bugForm/${encodeURIComponent(project.id)}`}>
                       <button className="button">Add a bug</button>
                     </Link>
                   )}
 
                   {isMP && (
-                    <Link to={`/bugs/${project.name}`}>
+                    <Link to={`/bugs/${project.id}`}>
                       <button className="button">See Bugs</button>
                     </Link>
                   )}
@@ -189,7 +188,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 

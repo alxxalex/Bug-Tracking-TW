@@ -3,11 +3,11 @@ import * as bugControllerMethods from "../Controllers/bugController.js";
 
 const router = express.Router();
 
-router.post("/newBug", bugControllerMethods.insertBugIntoDb);
+router.post("/newBug/:projectId", bugControllerMethods.insertBugIntoDb);
 
 router.get("/bugs", bugControllerMethods.getBugsFromDb);
 
-router.get("/bugs/:projectName", bugControllerMethods.getBugsForProject);
+router.get("/bugs/:projectId", bugControllerMethods.getBugsForProject);
 
 router.put("/bugs/updateBugSatus", bugControllerMethods.updateBugStatus);
 

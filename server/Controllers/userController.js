@@ -19,10 +19,8 @@ const getUsersFromDb = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  console.log("Out");
   const user = await User.findByPk(req.params.userId);
   if (user) {
-    console.log(user);
     const updatedUser = await user.update(req.body);
     return res.status(200).json(updatedUser);
   } else {

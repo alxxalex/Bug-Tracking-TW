@@ -3,43 +3,67 @@ import "./BugsForProject.css";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useUser } from "../context/UserContext";
 
 const SERVER = "http://localhost:5001";
 
 function BugsForProject() {
   const [bugs, setBugs] = useState([]);
-  const { projectName } = useParams();
+  const [projectName, setProjectName] = useState("");
+  const { projectId } = useParams();
+  const { loggedInUser } = useUser();
+  let updatedBug;
 
   const fetchBugs = async () => {
     try {
       const response = await fetch(
-        `${SERVER}/api/bugs/${encodeURIComponent(projectName)}`
+        `${SERVER}/api/bugs/${encodeURIComponent(projectId)}`
       );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+      if (response.status === 404) {
+        console.log("Bugs not found for this project")
+      } else {
+        const bugsData = await response.json();
+        setBugs(bugsData);
       }
 
-      const bugsData = await response.json();
-      setBugs(bugsData);
     } catch (error) {
       console.error("Error fetching bugs for the project:", error.message);
     }
   };
 
+  const fetchProject = async () => {
+    try {
+      const responseProject = await fetch(
+        `${SERVER}/api/projects/${encodeURIComponent(projectId)}`
+      );
+
+      if (responseProject.ok) {
+        const project = await responseProject.json();
+        setProjectName(project.name)
+      }
+
+    } catch (error) {
+      console.error("Error fetching project", error.message);
+
+    }
+  }
+
   useEffect(() => {
     fetchBugs();
+    fetchProject();
+
   }, []);
 
-  async function updateBugStatus(id, status) {
+  async function updateBugStatus(id, status, assignedProjectMember) {
     try {
       const response = await fetch(`${SERVER}/api/bugs/updateBugSatus`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ id, status }),
+        body: JSON.stringify({ id, status, assignedProjectMember }),
       });
-
+      updatedBug = await response.json();
       if (response.ok) {
         const updatedBugs = bugs.map((bug) => {
           if (bug.id === id) {
@@ -49,6 +73,7 @@ function BugsForProject() {
         });
 
         setBugs(updatedBugs);
+
       }
     } catch (error) {
       console.error("Error:", error);
@@ -134,7 +159,7 @@ function BugsForProject() {
             </tr>
           </thead>
           <tbody>
-            {bugs.map((bug, index) => (
+            {bugs != null && bugs.map((bug, index) => (
               <tr key={index}>
                 <td>{bug.name}</td>
                 <td>{bug.severity}</td>
@@ -145,8 +170,14 @@ function BugsForProject() {
                     className="selectStatus"
                     value={bug.status}
                     onChange={(e) => {
-                      updateBugStatus(bug.id, e.target.value);
+                      updateBugStatus(bug.id, e.target.value, loggedInUser.name);
                     }}
+                    disabled={updatedBug != null && (updatedBug.assignedProjectMember === loggedInUser.name)}
+                    style={
+                      (bug != null && bug.assignedProjectMember !== "" && bug.assignedProjectMember !== loggedInUser.name)
+                        ? { pointerEvents: "none", touchAction: "none" }
+                        : {}
+                    }
                   >
                     <option value="Unsolved"> Unsolved</option>
                     <option value="In Progress">In Progress</option>
@@ -165,7 +196,7 @@ function BugsForProject() {
           </tbody>
         </table>
       </div>
-    </div>
+    </div >
   );
 }
 
