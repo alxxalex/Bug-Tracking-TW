@@ -45,7 +45,6 @@ function NewProjectForm() {
           },
           body: JSON.stringify(projectData),
         }
-
       );
 
       if (response.ok && responseFromUser.ok) {

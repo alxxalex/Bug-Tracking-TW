@@ -36,6 +36,9 @@ app.listen(serverPort, async () => {
   try {
     await sequelize.authenticate();
     console.log("Connection established");
+
+    await sequelize.sync({ alter: true });
+    console.log("Tables synchronized");
   } catch (err) {
     console.log(err);
   }

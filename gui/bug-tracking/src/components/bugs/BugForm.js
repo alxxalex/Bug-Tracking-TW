@@ -42,7 +42,6 @@ function BugForm() {
       if (response.ok) {
         navigate("/home");
       }
-
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred");

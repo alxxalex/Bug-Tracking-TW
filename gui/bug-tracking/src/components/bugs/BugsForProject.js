@@ -20,12 +20,11 @@ function BugsForProject() {
         `${SERVER}/api/bugs/${encodeURIComponent(projectId)}`
       );
       if (response.status === 404) {
-        console.log("Bugs not found for this project")
+        console.log("Bugs not found for this project");
       } else {
         const bugsData = await response.json();
         setBugs(bugsData);
       }
-
     } catch (error) {
       console.error("Error fetching bugs for the project:", error.message);
     }
@@ -39,19 +38,16 @@ function BugsForProject() {
 
       if (responseProject.ok) {
         const project = await responseProject.json();
-        setProjectName(project.name)
+        setProjectName(project.name);
       }
-
     } catch (error) {
       console.error("Error fetching project", error.message);
-
     }
-  }
+  };
 
   useEffect(() => {
     fetchBugs();
     fetchProject();
-
   }, []);
 
   async function updateBugStatus(id, status, assignedProjectMember) {
@@ -73,7 +69,6 @@ function BugsForProject() {
         });
 
         setBugs(updatedBugs);
-
       }
     } catch (error) {
       console.error("Error:", error);
@@ -159,44 +154,54 @@ function BugsForProject() {
             </tr>
           </thead>
           <tbody>
-            {bugs != null && bugs.map((bug, index) => (
-              <tr key={index}>
-                <td>{bug.name}</td>
-                <td>{bug.severity}</td>
-                <td>{bug.priority}</td>
-                <td>
-                  <select
-                    id="selectStatus"
-                    className="selectStatus"
-                    value={bug.status}
-                    onChange={(e) => {
-                      updateBugStatus(bug.id, e.target.value, loggedInUser.name);
-                    }}
-                    disabled={updatedBug != null && (updatedBug.assignedProjectMember === loggedInUser.name)}
-                    style={
-                      (bug != null && bug.assignedProjectMember !== "" && bug.assignedProjectMember !== loggedInUser.name)
-                        ? { pointerEvents: "none", touchAction: "none" }
-                        : {}
-                    }
-                  >
-                    <option value="Unsolved"> Unsolved</option>
-                    <option value="In Progress">In Progress</option>
-                    <option value="Resolved">Resolved</option>
-                  </select>
-                </td>
-                <td>
-                  <input id="commitLinkSolvedBug" type="text"></input>
-                  <i
-                    className="gg-check"
-                    onClick={() => saveCommitLinkSolvedBug(bug.id)}
-                  ></i>
-                </td>
-              </tr>
-            ))}
+            {bugs != null &&
+              bugs.map((bug, index) => (
+                <tr key={index}>
+                  <td>{bug.name}</td>
+                  <td>{bug.severity}</td>
+                  <td>{bug.priority}</td>
+                  <td>
+                    <select
+                      id="selectStatus"
+                      className="selectStatus"
+                      value={bug.status}
+                      onChange={(e) => {
+                        updateBugStatus(
+                          bug.id,
+                          e.target.value,
+                          loggedInUser.name
+                        );
+                      }}
+                      disabled={
+                        updatedBug != null &&
+                        updatedBug.assignedProjectMember === loggedInUser.name
+                      }
+                      style={
+                        bug != null &&
+                        bug.assignedProjectMember !== "" &&
+                        bug.assignedProjectMember !== loggedInUser.name
+                          ? { pointerEvents: "none", touchAction: "none" }
+                          : {}
+                      }
+                    >
+                      <option value="Unsolved"> Unsolved</option>
+                      <option value="In Progress">In Progress</option>
+                      <option value="Resolved">Resolved</option>
+                    </select>
+                  </td>
+                  <td>
+                    <input id="commitLinkSolvedBug" type="text"></input>
+                    <i
+                      className="gg-check"
+                      onClick={() => saveCommitLinkSolvedBug(bug.id)}
+                    ></i>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>
-    </div >
+    </div>
   );
 }
 

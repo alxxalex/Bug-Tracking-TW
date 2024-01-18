@@ -19,7 +19,6 @@ function EditProjectForm() {
           setName(projectData.name);
           setRepositoryLink(projectData.repositoryLink);
         }
-
       } catch (error) {
         console.error("Error fetching project details:", error.message);
       }

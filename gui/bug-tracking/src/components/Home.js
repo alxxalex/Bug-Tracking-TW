@@ -33,7 +33,6 @@ function Home() {
         const projectsData = await response.json();
         setProjects(projectsData);
       }
-
     } catch (error) {
       console.error("Error fetching projects:", error.message);
     }
@@ -49,7 +48,6 @@ function Home() {
         const projectsForMpData = await response.json();
         setProjects(projectsForMpData);
       }
-
     } catch (error) {
       console.error("Error fetching projects:", error.message);
     }
@@ -61,7 +59,7 @@ function Home() {
     } else {
       fetchProjectsForMp();
     }
-  }, [loggedInUser.role]);
+  });
 
   const becomeTester = async () => {
     try {
@@ -123,7 +121,6 @@ function Home() {
   }
 
   return (
-
     <div className="home-container">
       <i id="logOut" className="fa fa-sign-out" onClick={handleLogout}></i>
       <div className="home">
@@ -141,7 +138,6 @@ function Home() {
             Become a Tester
           </button>
         )}
-
 
         <table>
           <thead>
@@ -188,7 +184,7 @@ function Home() {
           </tbody>
         </table>
       </div>
-    </div >
+    </div>
   );
 }
 

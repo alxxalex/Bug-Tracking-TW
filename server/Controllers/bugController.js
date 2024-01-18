@@ -3,14 +3,16 @@ import { Project } from "../models/project.js";
 
 const insertBugIntoDb = async (req, res) => {
   try {
-    const project = await Project.findByPk(req.params.projectId)
+    const project = await Project.findByPk(req.params.projectId);
     const newBug = await Bug.create(req.body);
     if (project) {
       project.addBug(newBug);
       await newBug.save();
       return res.status(201).json(newBug);
     } else {
-      return res.status(404).json({ error: `Project with id ${req.params.projectId} not found` })
+      return res
+        .status(404)
+        .json({ error: `Project with id ${req.params.projectId} not found` });
     }
   } catch (err) {
     return res.status(500).json(err);
@@ -30,7 +32,7 @@ const getBugsForProject = async (req, res) => {
   try {
     const projectId = req.params.projectId;
 
-    const project = await Project.findByPk(projectId)
+    const project = await Project.findByPk(projectId);
     if (project) {
       const bugsForProject = await project.getBugs();
 
@@ -41,9 +43,7 @@ const getBugsForProject = async (req, res) => {
       }
       return res.status(200).json(bugsForProject);
     } else {
-      return res
-        .status(404)
-        .json({ message: "Project not found" });
+      return res.status(404).json({ message: "Project not found" });
     }
   } catch (err) {
     return res.status(500).json(err);
